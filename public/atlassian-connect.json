@@ -1,0 +1,154 @@
+{
+  "key": "io.qameta.allure.allure-ee-jira",
+  "name": "Allure TestOps for Jira",
+  "description": "This plugin allow you to connect your Jira instance with Allure TestOps instance.",
+  "baseUrl": "{{localBaseUrl}}",
+  "apiMigrations": {
+    "gdpr": true,
+    "signed-install": true
+  },
+  "authentication": {
+    "type": "jwt"
+  },
+  "lifecycle": {
+    "installed": "/installed"
+  },
+  "scopes": [
+    "READ"
+  ],
+  "modules": {
+    "configurePage": {
+      "url": "/page/configuration",
+      "key": "allure-testops-configuration-page",
+      "name": {
+        "value": "Allure TestOps configuration"
+      }
+    },
+    "webPanels": [
+      {
+        "url": "/panel/testcases?issueKey={issue.key}",
+        "key": "allure-testcases-issue-panel",
+        "location": "atl.jira.view.issue.left.context",
+        "weight": 100,
+        "name": {
+          "value": "Allure TestOps: Test Cases"
+        },
+        "conditions": [
+          {
+            "condition": "entity_property_equal_to",
+            "params": {
+              "entity": "addon",
+              "propertyKey": "configuration",
+              "objectName": "enabled",
+              "value": "on"
+            }
+          },
+          {
+            "condition": "entity_property_equal_to",
+            "params": {
+              "entity": "addon",
+              "propertyKey": "configuration",
+              "objectName": "testCasesPanel",
+              "value": "left"
+            }
+          }
+        ]
+      },
+      {
+        "url": "/panel/testcases?issueKey={issue.key}",
+        "key": "allure-testops-testcases-issue-right",
+        "location": "atl.jira.view.issue.right.context",
+        "layout": {
+          "width": "100%",
+          "height": "100%"
+        },
+        "weight": 100,
+        "name": {
+          "value": "Allure TestOps: Test Cases"
+        },
+        "conditions": [
+          {
+            "condition": "entity_property_equal_to",
+            "params": {
+              "entity": "addon",
+              "propertyKey": "configuration",
+              "objectName": "enabled",
+              "value": "on"
+            }
+          },
+          {
+            "condition": "entity_property_equal_to",
+            "params": {
+              "entity": "addon",
+              "propertyKey": "configuration",
+              "objectName": "testCasesPanel",
+              "value": "right"
+            }
+          }
+        ]
+      },
+      {
+        "url": "/panel/launches?issueKey={issue.key}",
+        "key": "allure-launches-issue-panel",
+        "location": "atl.jira.view.issue.left.context",
+        "weight": 200,
+        "name": {
+          "value": "Allure TestOps: Launches"
+        },
+        "conditions": [
+          {
+            "condition": "entity_property_equal_to",
+            "params": {
+              "entity": "addon",
+              "propertyKey": "configuration",
+              "objectName": "enabled",
+              "value": "on"
+            }
+          },
+          {
+            "condition": "entity_property_equal_to",
+            "params": {
+              "entity": "addon",
+              "propertyKey": "configuration",
+              "objectName": "launchesPanel",
+              "value": "left"
+            }
+          }
+        ]
+      },
+      {
+        "url": "/panel/launches?issueKey={issue.key}",
+        "key": "allure-testops-launches-issue-right",
+        "location": "atl.jira.view.issue.right.context",
+        "layout": {
+          "width": "100%",
+          "height": "100%"
+        },
+        "weight": 200,
+        "name": {
+          "value": "Allure TestOps: Launches"
+        },
+        "conditions": [
+          {
+            "condition": "entity_property_equal_to",
+            "params": {
+              "entity": "addon",
+              "propertyKey": "configuration",
+              "objectName": "enabled",
+              "value": "on"
+            }
+          },
+          {
+            "condition": "entity_property_equal_to",
+            "params": {
+              "entity": "addon",
+              "propertyKey": "configuration",
+              "objectName": "launchesPanel",
+              "value": "right"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

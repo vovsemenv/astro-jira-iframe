@@ -1,60 +1,57 @@
 ---
+import {
+  hiddenClassName,
+  IframeConfig,
+  iframeId,
+  IframeTypes,
+} from "../jira-utils";
 export interface Props {
-	title: string;
+  iframeType: IframeTypes;
 }
-
-const { title } = Astro.props;
+const { iframeType } = Astro.props;
+export const iframeConfig: IframeConfig = {
+  issueKey: "issueKey",
+  addonKey: "addonKey",
+  restBase: "restBase",
+};
+const localBaseUrl = "localBaseUrl";
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="ap-local-base-url" content={localBaseUrl} />
+    <meta name="viewport" content="width=device-width" />
+    <title>Allure TestOps for Jira</title>
+  </head>
+  <body>
+    <iframe
+      frameborder="0"
+      scrolling="no"
+      id={iframeId}
+      class:list={["allure-iframe", hiddenClassName]}></iframe>
+    <style is:inline>
+      .allure-iframe {
+        height: 62px;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        border: none;
+        overflow: hidden;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+    <!-- In astro you can't use define:vars and import inside one script so we use this workaround-->
+    <script define:vars={{ iframeType, iframeConfig }}>
+      window.iframeType = iframeType;
+      window.iframeConfig = iframeConfig;
+    </script>
+    <script>
+      import { initIframe } from "../jira-utils";
+      initIframe((window as any).iframeType, (window as any).iframeConfig);
+    </script>
+  </body>
 </html>
-<style>
-	:root {
-		--font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
-		--font-size-lg: clamp(1.2rem, 0.7vw + 1.2rem, 1.5rem);
-		--font-size-xl: clamp(2.44rem, 2.38vw + 1.85rem, 3.75rem);
-
-		--color-text: hsl(12, 5%, 4%);
-		--color-bg: hsl(10, 21%, 95%);
-		--color-border: hsl(17, 24%, 90%);
-	}
-
-	html {
-		font-family: system-ui, sans-serif;
-		font-size: var(--font-size-base);
-		color: var(--color-text);
-		background-color: var(--color-bg);
-	}
-
-	body {
-		margin: 0;
-	}
-
-
-</style>
-
-<style is:global>
-	h1 {
-		font-size: var(--font-size-xl);
-	}
-
-	h2 {
-		font-size: var(--font-size-lg);
-	}
-
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
-</style>
